@@ -1,0 +1,19 @@
+name: Refresh Chat2API Token
+on:
+  schedule:
+    - cron: '0 3 * * *'  # 每天凌晨3点(UTC) = 北京时间11点
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run token refresh
+        run: python3 refresh_token.py
+        env:
+          SESSION_TOKEN: ${{ secrets.SESSION_TOKEN }}
+          CHAT2API_URL: ${{ secrets.CHAT2API_URL }}
